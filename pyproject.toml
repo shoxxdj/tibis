@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "tibis"
+version = "1.0.0"
+description = ""
+authors = ["shoxxdj <shoxx@shoxxdj.fr>"]
+readme = "README.md"
+homepage = "https://github.com/shoxxdj/tibis"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+py-pgp = "^0.0.1"
+simple-chalk = "^0.1.0"
+PyYAML = "^6.0"
+PGPy = "^0.5.4"
+termcolor = "^1.1.0"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+tibis="tibis.tibis:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
