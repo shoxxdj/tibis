@@ -10,9 +10,7 @@ Name is inspired by the Egyptian god of writers and protector of knowledge
 ## TLDR; Setup 
 
 ```
-git clone https://github.com/shoxxdj/tibis.git
-cd tibis
-poetry install 
+pip install tibis
 ```
 
 ## TLDR; Usage 
