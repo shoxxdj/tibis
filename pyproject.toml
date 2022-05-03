@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tibis"
-version = "1.0.0"
+version = "1.0.1"
 description = ""
 authors = ["shoxxdj <shoxx@shoxxdj.fr>"]
 readme = "README.md"
