@@ -15,6 +15,14 @@ pip install tibis
 
 ## TLDR; Usage 
 
+### Customise the data location path
+
+Default config is set to be at : 
+```
+~/.config/tibis/config.yml
+```
+You HAVE TO edit the storage_path to something more secure than /tmp :) 
+
 ### Create a new data container
 ```
 tibis create <name>
