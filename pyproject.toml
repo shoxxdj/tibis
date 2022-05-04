@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tibis"
-version = "1.0.3"
+version = "1.0.4"
 description = "Tibis is a secure storage manager"
 authors = ["shoxxdj <shoxx@shoxxdj.fr>"]
 readme = "README.md"
