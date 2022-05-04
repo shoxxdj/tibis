@@ -2,6 +2,7 @@ from pathlib import Path
 from os import rmdir
 import tibis.lib.logger as log
 import tibis.lib.common as common
+import tibis.lib.config as config
 import tibis.lib.static as static
 
 def lock(dirname):
@@ -19,7 +20,7 @@ def lock(dirname):
  		#Create archive
  		[f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
  		archivePath=common.createArchive(dirname,mountPoint,static.tibis_tmp_dir)
- 		common.cryptArchive(publicKeyLocation,archivePath,static.tibis_storage_path,dirname)
+ 		common.cryptArchive(publicKeyLocation,archivePath,config.storage_path(),dirname)
  		[f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
  		common.remove_dir(mountPoint)
  		common.updateStatus(dirname,'locked')

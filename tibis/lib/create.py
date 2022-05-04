@@ -33,7 +33,7 @@ def create(dirname):
   path.mkdir(parents=True,exist_ok=True)
   
   archive=common.createArchive(dirname,static.tibis_empty_dir,static.tibis_tmp_dir)
-  common.cryptArchive(publicKeyLocation,archive,static.tibis_storage_path,dirname)
+  common.cryptArchive(publicKeyLocation,archive,config.storage_path(),dirname)
 
  else:
    log.error("Name already Exists")

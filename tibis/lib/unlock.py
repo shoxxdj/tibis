@@ -1,6 +1,7 @@
 import pgpy
 import getpass
 import tibis.lib.common as common
+import tibis.lib.config as config
 import tibis.lib.static as static
 import tibis.lib.logger as log
 from pathlib import Path
@@ -22,7 +23,7 @@ def unlock(dirname,destination):
   p = getpass.getpass("")
   with enc_privatekey.unlock(p) as privatekey:
    #Uncrypt datas
-   encrypted_content=pgpy.PGPMessage.from_file(static.tibis_storage_path+"/"+dirname)
+   encrypted_content=pgpy.PGPMessage.from_file(config.storage_path()+"/"+dirname)
    plaintext=privatekey.decrypt(encrypted_content).message
    #TODO Verify if its ok
    #Empty tmp dir
