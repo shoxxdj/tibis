@@ -27,5 +27,5 @@ tibis_empty_dir="/tmp/tempate_tibis_empty_dir"
 tibis_storage_path="/tmp/storage"
 tibis_tmp_dir="/tmp/tibis_tmp"
 
-default_config={'storage_path':tibis_storage_path,'keys_location':tibis_keys_location}
+default_config={'storage_path':tibis_storage_path,'keys_location':tibis_keys_location,'pgp_infos':{'email':'tibis@localhost.org','comment':'Tibis Key','name':'Tibis'}}
 
