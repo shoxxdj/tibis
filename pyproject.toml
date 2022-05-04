@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "tibis"
-version = "1.0.2"
-description = ""
+version = "1.0.3"
+description = "Tibis is a secure storage manager"
 authors = ["shoxxdj <shoxx@shoxxdj.fr>"]
 readme = "README.md"
 homepage = "https://github.com/shoxxdj/tibis"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.6"
 py-pgp = "^0.0.1"
 simple-chalk = "^0.1.0"
 PyYAML = "^6.0"
