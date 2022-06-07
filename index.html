@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+	<link href="public/css/bootstrap.min.css" rel="stylesheet">
+	<link href="public/css/cover.css" rel="stylesheet">
+	<title class="firstLetter">Tibis</title>
+</head>
+
+<body class="text-center">
+	<div id="app">
+		<div class="cover-container d-flex h-50 mx-auto flex-column">
+			<header class="masthead mb-auto">
+				<div class="inner">
+					<h3 class="masthead-brand">Tibis</h3>
+					<nav class="nav nav-masthead justify-content-center">
+						<a class="nav-link active" href="#main">Home</a>
+						<a class="nav-link" href="#man">Manual</a>
+						<a class="nav-link" href="https://github.com/shoxxdj/tibis">Download</a>
+					</nav>
+				</div>
+			</header>
+
+			<main role="main" class="inner cover" id="main">
+				<h1 class="cover-heading firstLetter">Tibis</h1>
+				<p class="lead firstLetter"></p>
+				<p class="lead">
+					<h3 class="pip">pip install tibis</h3>
+					<a href="https://github.com/shoxxdj/tibis" class="btn btn-lg btn-secondary">Download</a>
+				</p>
+			</main>
+
+			<div id="man">
+				<h4>About</h4>
+				<p class="firstLetter">
+				Tibis (tibis the IBIS) is a tool to help manage encrypted directories (named data container here).</p>
+				<p class="firstLetter">Name is inspired by the Egyptian god of writers and protector of knowledge.</p>
+				<p class="firstLetter">Basically Tibis is GPG and TAR put together with a command line interface and configuration file.</p>
+				<p class="firstLetter">Many other tools may provide the same functionnalities like VeraCrypt or Zed, however, here, the code is simple, and the technology is known.
+				</p>
+				<h4>How does it works ?</h4>
+				<p class="firstLetter"></p>
+				<p>
+					<h5>Create a new data container</h5>
+					<pre>tibis create < name ></pre>
+					<i>tibis will ask you a passphrase, choose a good one !</i>
+				</p>
+
+				<p>
+					<h5>List data container</h5>
+					<pre>tibis list </pre>
+				</p>
+				<p>
+					<h5>Mount a data container</h5>
+					<pre>tibis unlock < name > < destination path ></pre>
+					<i>tibis will ask your passphrase.</i>
+				</p>
+				<p>
+					<h5>Lock a data container</h5>
+					<pre>tibis lock < name ></pre>
+					<i>tibis will not ask your passphrase.. because it's PGP Public key.</i>
+				</p>
+				<p>
+					<h5>Remove an entry</h5>
+					<pre>tibis delete < name ></pre>
+					<i>tibis will ask you a confirmation, take care !</i>
+				</p>
+				<p>
+					<h5>Why ?</h5>
+					<i>	Because we have to handle with sensitive files, and store them securly can be boring</i>
+				</p>
+				<p>
+					<h5>How ?</h5>
+					<i>Tibis is a kind of python wrapper on pgp keys and gzip files.</i>
+					<u>Yes, nothing more.</u>
+				</p>
+				<p>
+					<h5>Why do we have to set passphrase ?</h5>
+					<i>Security is a matter of trust, if you don't trust your laptop enough to store sensitive data, why leave the keys in it ?</i>
+					<i>By using a passphrase, access to the data needs : something you have ( data / key ) and something you know ( passphrase )</i>
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
