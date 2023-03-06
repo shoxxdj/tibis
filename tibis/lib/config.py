@@ -5,3 +5,8 @@ def storage_path():
     with open(static.tibis_full_config_location) as file:
         p = yaml.load(file,Loader=yaml.FullLoader)
         return p['storage_path']
+
+def pgp_infos():
+    with open(static.tibis_full_config_location) as file:
+        p = yaml.load(file,Loader=yaml.FullLoader)
+        return p['pgp_infos']

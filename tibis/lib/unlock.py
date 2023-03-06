@@ -21,23 +21,27 @@ def unlock(dirname,destination):
   #Unlock key
   log.ask("Enter passphrase :")
   p = getpass.getpass("")
-  with enc_privatekey.unlock(p) as privatekey:
-   #Uncrypt datas
-   encrypted_content=pgpy.PGPMessage.from_file(config.storage_path()+"/"+dirname)
-   plaintext=privatekey.decrypt(encrypted_content).message
-   #TODO Verify if its ok
-   #Empty tmp dir
-   [f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
-   with open(static.tibis_tmp_dir+"/"+dirname,'wb') as archive:
-   	archive.write(plaintext)
 
-   #Prepare output
-   path=Path(destination)
-   path.mkdir(exist_ok=True,parents=True)
-   common.uncompressArchive(static.tibis_tmp_dir+"/"+dirname,destination)
-   if(common.updateStatus(dirname,"unlocked") and common.updateMountPoint(dirname,destination)):
-   	log.success("Open at "+destination)
-   [f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
+  try:
+    with enc_privatekey.unlock(p) as privatekey:
+        #Uncrypt datas
+        encrypted_content=pgpy.PGPMessage.from_file(config.storage_path()+"/"+dirname)
+        plaintext=privatekey.decrypt(encrypted_content).message
+        #TODO Verify if its ok
+        #Empty tmp dir
+        [f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
+        with open(static.tibis_tmp_dir+"/"+dirname,'wb') as archive:
+            archive.write(plaintext)
+
+        #Prepare output
+        path=Path(destination)
+        path.mkdir(exist_ok=True,parents=True)
+        common.uncompressArchive(static.tibis_tmp_dir+"/"+dirname,destination)
+        if(common.updateStatus(dirname,"unlocked") and common.updateMountPoint(dirname,destination)):
+            log.success("Open at "+destination)
+        [f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
+  except Exception as e: 
+    print(e)
 
 if __name__ == '__main__':
     unlock(dirname,destination)

@@ -40,7 +40,7 @@ def create(dirname):
 
 def keys_operations(dirname,passphrase):
  key = pgpy.PGPKey.new(PubKeyAlgorithm.RSAEncryptOrSign, 4096)
- uid = pgpy.PGPUID.new('Abraham Lincoln', comment='Honest Abe', email='abraham.lincoln@whitehouse.gov')
+ uid = pgpy.PGPUID.new(config.pgp_infos()['name'], comment=config.pgp_infos()['comment'], email=config.pgp_infos()['email'])
  key.add_uid(uid, usage={KeyFlags.Sign, KeyFlags.EncryptCommunications, KeyFlags.EncryptStorage},
             hashes=[HashAlgorithm.SHA256, HashAlgorithm.SHA384, HashAlgorithm.SHA512, HashAlgorithm.SHA224],
             ciphers=[SymmetricKeyAlgorithm.AES256],
