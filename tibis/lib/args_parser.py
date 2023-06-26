@@ -10,7 +10,7 @@ import tibis.lib.logger as log
 
 def args_parser():
 
-	parser = argparse.ArgumentParser(exit_on_error=False,description=f"""
+	parser = argparse.ArgumentParser(description=f"""
 		   _   _   _   _   _  
 		  / \ / \ / \ / \ / \ 
 		 ( t | i | b | i | s )
