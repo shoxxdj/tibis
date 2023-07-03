@@ -16,7 +16,7 @@ def delete(dirname):
     #On vire la data  du storage
     if(common.isUnlocked(dirname)):
       mp=common.getMountPoint(dirname)
-      log.warning("Your content was previously unlocked at "+ mp +" you have to delete it by yourself")
+      log.warning("Your content was previously unlocked at "+ str(mp) +" you have to delete it by yourself")
       try:
        common.remove_dir(static.tibis_keys_location+"/"+dirname)
       except:
