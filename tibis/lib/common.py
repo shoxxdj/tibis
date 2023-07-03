@@ -1,5 +1,6 @@
 import tarfile
 import sqlite3
+import hashlib
 import pgpy
 import tibis.lib.logger as log
 import tibis.lib.static as static
@@ -7,6 +8,13 @@ import tibis.lib.config as config
 
 from pathlib import Path
 import os 
+import sys
+import threading
+import time
+
+from pyspin.spin import Spin5, Spinner
+
+runningSpinner = True 
 
 def existsInDB(name):
 	rows=True
@@ -165,23 +173,28 @@ def createArchive(dirname,source,dest):
 	return dest+"/"+dirname+".gz"
 
 def cryptArchive(keyPath,source,dest,dirname):
-	pubkey,_ = pgpy.PGPKey.from_file(keyPath)
-	# file = open(source, "rb")
-	# data = file.read()
-	# file.close()
-	# message = pgpy.PGPMessage.new(data)
-	file_message=pgpy.PGPMessage.new(source,file=True)
-	encrypted_message = pubkey.encrypt(file_message)
+	try:
+		pubkey,_ = pgpy.PGPKey.from_file(keyPath)
+		# file = open(source, "rb")
+		# data = file.read()
+		# file.close()
+		# message = pgpy.PGPMessage.new(data)
+		file_message=pgpy.PGPMessage.new(source,file=True)
+		encrypted_message = pubkey.encrypt(file_message)
 
-	#Important remove the clear content
-	deleteArchive(source)
-	#Save data into storage
-	outputfile=dest+"/"+dirname
+		#Important remove the clear content
+		deleteArchive(source)
+		#Save data into storage
+		outputfile=dest+"/"+dirname
 
-	#bytes_data=bytes(encrypted_message)
+		#bytes_data=bytes(encrypted_message)
 
-	with open(outputfile,'wb') as destFile:
-		destFile.write(bytes(encrypted_message))
+		with open(outputfile,'wb') as destFile:
+			destFile.write(bytes(encrypted_message))
+		return True
+	except Exception as e:
+		print(e)
+		return False
 
 def remove_dir(directory):
     path=Path(directory)
@@ -207,3 +220,88 @@ def deleteSQLEntry(name):
 		finally:
 			conn.close()
 			return allGood
+
+def calculate_hash(file_content, algorithm="sha256"):
+    hasher = hashlib.new(algorithm)
+    hasher.update(file_content)
+    return hasher.hexdigest()
+
+def calculate_tar_hash(archive_path, algorithm="sha256"):
+    tar = tarfile.open(archive_path, "r")
+    file_hashes = {}
+
+    for member in tar.getmembers():
+        if member.isfile():
+            file_content = tar.extractfile(member).read()
+            file_hash = calculate_hash(file_content, algorithm)
+            file_hashes[member.name] = file_hash
+
+    tar.close()
+    return file_hashes
+
+def calculate_directory_hash(directory,algorithm="sha256"):
+    file_hashes = {}
+
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            file_path = os.path.join(root, file)
+            with open(file_path, 'rb') as f:
+                content = f.read()
+                #file_hash = hashlib.sha256(content).hexdigest()
+                file_hash = calculate_hash(content, algorithm)
+                file_hashes[file_path] = file_hash
+    return file_hashes 
+
+def checkArchiveIntegrity(archive_path):
+
+	global runningSpinner
+	# Create a separate thread for the spinning cursor
+	spinner_thread = threading.Thread(target=spinning_cursor)
+	spinner_thread.start()
+
+	value = calculate_tar_hash(archive_path)
+	runningSpinner = False
+	# Wait for the spinner thread to finish
+	spinner_thread.join(0)
+	sys.stdout.flush()
+	
+	return value
+
+def spinning_cursor():
+	spin = Spinner(Spin5)
+	global runningSpinner
+	while runningSpinner:
+		for i in range(50):
+			print(u"\r{0} Checking Integrity ...".format(spin.next()), end="")
+			sys.stdout.flush()
+			time.sleep(0.1)
+
+def checkIntegrityIsOK(archiveIntegrity,directoryIntegrity,mountPoint):
+	if(len(archiveIntegrity) != len(directoryIntegrity)):
+		log.error("Not the same files")
+		log.error("Archive Content : "+archiveIntegrity)
+		log.error("Directory Content : "+directoryIntegrity)
+		sys.exit("ERROR")
+
+	_directoryIntegrity=[]
+	_archiveIntegrity=[]
+
+	if(mountPoint[::-1][0]!='/'):
+		mountPoint+="/"
+	#CleanDirectoryIntegrity to remove mountPointValue
+	for obj in directoryIntegrity:
+		_directoryIntegrity.append({obj.replace(mountPoint,""):directoryIntegrity[obj]})
+	for obj in archiveIntegrity:
+		_archiveIntegrity.append({obj:archiveIntegrity[obj]})
+	
+	# Convert data1 and data2 to sets of frozensets
+	set1 = {frozenset(item.items()) for item in _archiveIntegrity}
+	set2 = {frozenset(item.items()) for item in _directoryIntegrity}
+
+	if(set1!=set2 or set2!=set1):
+		log.error("Integrity error")
+		log.error("Archive Content : "+archiveIntegrity)
+		log.error("Directory Content : "+directoryIntegrity)
+		sys.exit(1)
+	else:
+		log.success("Same integrity between archive and content")

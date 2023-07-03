@@ -1,6 +1,6 @@
 from pathlib import Path
 
-version  = '1.0.5'
+version  = '1.0.8'
 codename = "Ibis is born"
 
 tibis_config_file="config.yml"
@@ -27,5 +27,5 @@ tibis_empty_dir="/tmp/tempate_tibis_empty_dir"
 tibis_storage_path="/tmp/storage"
 tibis_tmp_dir="/tmp/tibis_tmp"
 
-default_config={'storage_path':tibis_storage_path,'keys_location':tibis_keys_location,'pgp_infos':{'email':'tibis@localhost.org','comment':'Tibis Key','name':'Tibis'}}
+default_config={'storage_path':tibis_storage_path,'keys_location':tibis_keys_location,'pgp_infos':{'email':'tibis@localhost.org','comment':'Tibis Key','name':'Tibis'},'check_integrity':True}
 
