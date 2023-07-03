@@ -37,6 +37,7 @@ def create(dirname):
 
  else:
    log.error("Name already Exists")
+   log.error("Maybe consider removing it : tibis delete "+str(dirname))
 
 def keys_operations(dirname,passphrase):
  key = pgpy.PGPKey.new(PubKeyAlgorithm.RSAEncryptOrSign, 4096)
