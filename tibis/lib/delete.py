@@ -19,9 +19,9 @@ def delete(dirname):
       log.warning("Your content was previously unlocked at "+ str(mp) +" you have to delete it by yourself")
       try:
        common.remove_dir(static.tibis_keys_location+"/"+dirname)
+       common.deleteSQLEntry(dirname)
       except:
        log.warning("Keys are already gone")
-      common.deleteSQLEntry(dirname)
       log.warning("Entry and keys removed")
    else:
     log.success("Leaves the things as it ...")     
