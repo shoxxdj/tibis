@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tibis"
-version = "1.0.10"
+version = "1.1.0"
 description = "Tibis is a secure storage manager"
 authors = ["shoxxdj <shoxx@shoxxdj.fr>"]
 readme = "README.md"
@@ -13,6 +13,8 @@ PyYAML = "^6.0"
 termcolor = "^1.1.0"
 PGPy = "^0.6.0"
 pyspin = "^1.1.1"
+halo = "^0.0.31"
+log-symbols = "^0.0.14"
 
 [tool.poetry.dev-dependencies]
 

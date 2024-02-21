@@ -40,6 +40,7 @@ def firstTime():
  default_config['pgp_infos']['email']=email
  default_config['pgp_infos']['comment']=comment
  default_config['storage_path']=storage_path
+ default_config['compression_method']='gz'
 
  with open(static.tibis_full_config_location,'w') as file:
   yaml.dump(default_config,file)

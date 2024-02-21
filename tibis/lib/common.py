@@ -12,9 +12,7 @@ import sys
 import threading
 import time
 
-from pyspin.spin import Spin5, Spinner
-
-runningSpinner = True 
+from halo import Halo
 
 def existsInDB(name):
 	rows=True
@@ -139,7 +137,7 @@ def updateStatus(name,status):
 			return allGood
 
 def uncompressArchive(source,dest):
- with tarfile.open(source,"r:gz") as tar:
+ with tarfile.open(source,"r:"+config.compression_method() ) as tar:
   def is_within_directory(directory, target):
       
       abs_directory = os.path.abspath(directory)
@@ -165,12 +163,12 @@ def deleteArchive(source):
 	remove_dir(source)
 
 def createArchive(dirname,source,dest):
-	with tarfile.open(dest+"/"+dirname+".gz","w:gz") as tar:
+	with tarfile.open(dest+"/"+dirname+"."+config.compression_method(),"w:"+config.compression_method()) as tar:
 		for fn in os.listdir(source):
 			p = os.path.join(source, fn)
 			tar.add(p, arcname=fn)
 		#tar.add(source,arcname=dirname)
-	return dest+"/"+dirname+".gz"
+	return dest+"/"+dirname+"."+config.compression_method()
 
 def cryptArchive(keyPath,source,dest,dirname):
 	try:
@@ -253,28 +251,8 @@ def calculate_directory_hash(directory,algorithm="sha256"):
     return file_hashes 
 
 def checkArchiveIntegrity(archive_path):
-
-	global runningSpinner
-	# Create a separate thread for the spinning cursor
-	spinner_thread = threading.Thread(target=spinning_cursor)
-	spinner_thread.start()
-
 	value = calculate_tar_hash(archive_path)
-	runningSpinner = False
-	# Wait for the spinner thread to finish
-	spinner_thread.join(0)
-	sys.stdout.flush()
-	
 	return value
-
-def spinning_cursor():
-	spin = Spinner(Spin5)
-	global runningSpinner
-	while runningSpinner:
-		for i in range(50):
-			print(u"\r{0} Checking Integrity ...".format(spin.next()), end="")
-			sys.stdout.flush()
-			time.sleep(0.1)
 
 def checkIntegrityIsOK(archiveIntegrity,directoryIntegrity,mountPoint):
 	if(len(archiveIntegrity) != len(directoryIntegrity)):

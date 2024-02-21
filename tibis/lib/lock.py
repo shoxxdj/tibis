@@ -1,4 +1,5 @@
 from pathlib import Path
+from halo import Halo
 from os import rmdir
 import tibis.lib.logger as log
 import tibis.lib.common as common
@@ -21,20 +22,34 @@ def lock(dirname):
  		#Empty the tmpdir
  		[f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
  		#Create the archive
+ 		spinner = Halo(text='Creating archive ',spinner='moon')
+ 		spinner.start()
  		archivePath=common.createArchive(dirname,mountPoint,static.tibis_tmp_dir)
+ 		spinner.succeed('Archive created')
  		if(config.check_integrity_status()):
+ 			spinner = Halo(text='Checking directory integrity ',spinner='moon')
+ 			spinner.start()
  			directoryIntegrity=common.calculate_directory_hash(mountPoint)
+ 			spinner.succeed('Directory integrity obtained')
+ 			spinner = Halo(text='Checking archive integrity ',spinner='moon')
+ 			spinner.start()
  			archiveIntegrity=common.checkArchiveIntegrity(str(archivePath))
+ 			spinner.succeed('Archive integrity obtained')
  			common.checkIntegrityIsOK(archiveIntegrity,directoryIntegrity,mountPoint)
 
-
+ 		spinner = Halo(text='Encrypting and moving',spinner='moon')
+ 		spinner.start()
  		isCrypted=common.cryptArchive(publicKeyLocation,archivePath,config.storage_path(),dirname)
+ 		spinner.succeed('Archive encrypted')
  		#Need To check the previous return status
  		if(isCrypted):
+ 			spinner = Halo(text='Removing files ',spinner='moon')
+ 			spinner.start()
  			[f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
  			common.remove_dir(mountPoint)
  			common.updateStatus(dirname,'locked')
  			common.updateMountPoint(dirname,'')
+ 			spinner.succeed('Files removed')
  			log.success(dirname+" is locked")
  
 if __name__ == '__main__':

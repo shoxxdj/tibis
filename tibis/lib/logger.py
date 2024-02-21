@@ -1,29 +1,34 @@
 import simple_chalk as chalk
+from halo import Halo
+from log_symbols import LogSymbols
+
 
 def info(text):
- toPrint="[+] " + text
- print(chalk.blue.bold(toPrint))
+ spinner=Halo()
+ spinner.info(text)
 
 def success(text):
- toPrint="[V] "+ text 
- print(chalk.green.bold(toPrint))
+ spinner=Halo()
+ spinner.succeed(text)
 
 def ask(text):
- toPrint="[?] "+ text
- print(chalk.yellow.bold(toPrint))
+ spinner=Halo()
+ spinner.warn(text)
 
 def warning(text):
- toPrint="[!] "+ text
- print(chalk.yellow.bold(toPrint))
+ spinner=Halo()
+ spinner.warn(text)
 
 def error(text):
- toPrint="[?] "+ text
- print(chalk.red.bold(toPrint))
+ spinner=Halo()
+ spinner.fail(text)
 
 def locked(text):
- toPrint="[X] "+ text
- print(chalk.green(toPrint))
+ spinner=Halo()
+ toPrint = "[LOCKED] : "+text
+ print(chalk.green.bold(toPrint))
 
 def unlocked(text):
- toPrint="[O] "+ text
- print(chalk.red(toPrint))
+ spinner=Halo()
+ toPrint="[ OPEN ] : "+text
+ print(chalk.red.bold(toPrint))
