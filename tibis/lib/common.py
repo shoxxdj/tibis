@@ -257,8 +257,8 @@ def checkArchiveIntegrity(archive_path):
 def checkIntegrityIsOK(archiveIntegrity,directoryIntegrity,mountPoint):
 	if(len(archiveIntegrity) != len(directoryIntegrity)):
 		log.error("Not the same files")
-		log.error("Archive Content : "+archiveIntegrity)
-		log.error("Directory Content : "+directoryIntegrity)
+		log.error("Archive Content : "+str(archiveIntegrity))
+		log.error("Directory Content : "+str(directoryIntegrity))
 		sys.exit("ERROR")
 
 	_directoryIntegrity=[]

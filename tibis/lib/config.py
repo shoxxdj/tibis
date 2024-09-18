@@ -26,3 +26,17 @@ def compression_method():
             return p['compression_method']
         else:
             return 'gz'
+
+def isEncrypting():
+    with open(static.tibis_full_config_location) as file:
+        p = yaml.load(file,Loader=yaml.FullLoader)
+        if('encrypting' in p):
+            return p['encrypting']
+        else:
+            return False
+
+def defineEncryptingStatus(status):
+    with open(static.tibis_full_config_location,'r+') as file:
+        p = yaml.load(file,Loader=yaml.FullLoader)
+        p['encrypting']=status
+        yaml.dump(p,file)

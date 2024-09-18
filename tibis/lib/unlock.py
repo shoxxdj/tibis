@@ -1,4 +1,5 @@
 import pgpy
+import sqlite3
 import getpass
 import tibis.lib.common as common
 import tibis.lib.config as config
@@ -53,8 +54,29 @@ def unlock(dirname,destination):
         spinner.start()
         [f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
         spinner.succeed('tmp dir cleaned')
-  except Exception as e: 
-    print(e)
+        
+        #Print warning for opened container
+        unlockedCount=0
+        db=static.tibis_db_location
+        conn=sqlite3.connect(db)
+        cursor_obj = conn.cursor()
+        sql = static.tibis_database_list_all
+        cursor_obj.execute(sql)
+        rows = cursor_obj.fetchall()
+        for row in rows:
+            name=row[0]
+            status=row[3]
+            mount_point=row[4]
+            if(status=='unlocked'):
+                unlockedCount+=1
+            
+        if(unlockedCount>1):
+            log.warning(f"You have {unlockedCount} container unlocked !")
+            log.warning("Remember to have as less unencrypted data as possible.")
+  except Exception as e:
+    log.error(e)
+  finally:
+    conn.close()
 
 if __name__ == '__main__':
     unlock(dirname,destination)
