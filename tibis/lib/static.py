@@ -1,6 +1,6 @@
 from pathlib import Path
 
-version  = '1.1.2'
+version  = '1.1.3'
 codename = "Ibis is born"
 
 tibis_config_file="config.yml"
