@@ -24,6 +24,10 @@ def unlock(dirname,destination):
   log.ask("Enter passphrase :")
   p = getpass.getpass("")
 
+  if(not Path(static.tibis_tmp_dir).exists()):
+    Path.mkdir(static.tibis_tmp_dir)
+
+
   try:
     spinner = Halo(text='Unlocking passphrase', spinner='moon')
     spinner.start()
