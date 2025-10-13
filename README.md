@@ -10,7 +10,7 @@ Name is inspired by the Egyptian god of writers and protector of knowledge
 ## TLDR; Setup 
 
 ```
-pip install tibis
+pipx install tibis
 ```
 
 ## TLDR; Usage 
