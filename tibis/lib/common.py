@@ -163,12 +163,20 @@ def deleteArchive(source):
 	remove_dir(source)
 
 def createArchive(dirname,source,dest):
-	with tarfile.open(dest+"/"+dirname+"."+config.compression_method(),"w:"+config.compression_method()) as tar:
-		for fn in os.listdir(source):
-			p = os.path.join(source, fn)
-			tar.add(p, arcname=fn)
-		#tar.add(source,arcname=dirname)
-	return dest+"/"+dirname+"."+config.compression_method()
+	try:
+		with tarfile.open(dest+"/"+dirname+"."+config.compression_method(),"w:"+config.compression_method()) as tar:
+			for fn in os.listdir(source):
+				p = os.path.join(source, fn)
+				tar.add(p, arcname=fn)
+			#tar.add(source,arcname=dirname)
+		return dest+"/"+dirname+"."+config.compression_method()
+	except NotADirectoryError:
+		log.error("Source directory %s not found"%(source))
+		config.defineEncryptingStatus(False)
+		sys.exit("ERROR")
+	except Exception as e:
+		print(f"❌ Unexpected Error : {type(e).__name__} - {e}")			
+
 
 def cryptArchive(keyPath,source,dest,dirname):
 	try:

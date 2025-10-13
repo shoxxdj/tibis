@@ -38,5 +38,7 @@ def isEncrypting():
 def defineEncryptingStatus(status):
     with open(static.tibis_full_config_location,'r+') as file:
         p = yaml.load(file,Loader=yaml.FullLoader)
+        file.truncate(0)
+        file.seek(0)
         p['encrypting']=status
         yaml.dump(p,file)

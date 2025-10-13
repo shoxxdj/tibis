@@ -20,6 +20,9 @@ def lock(dirname):
 			#Get Keys
 			publicKeyLocation=common.getPublicKey(dirname)
 			mountPoint=common.getMountPoint(dirname)
+			if(not(mountPoint)):
+				log.error("MountPoint not found")
+				return False
 			if(not Path(static.tibis_tmp_dir).exists()):
 				path = Path(static.tibis_tmp_dir)
 				path.mkdir(parents=True,exist_ok=True)
