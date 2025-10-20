@@ -5,6 +5,7 @@ import tibis.lib.common as common
 import tibis.lib.config as config
 import tibis.lib.static as static
 import tibis.lib.logger as log
+from sys import exit
 from halo import Halo
 from pathlib import Path
 from tibis.lib.common import getPrivateKey
@@ -26,7 +27,6 @@ def unlock(dirname,destination):
 
   if(not Path(static.tibis_tmp_dir).exists()):
     Path.mkdir(static.tibis_tmp_dir)
-
 
   try:
     spinner = Halo(text='Unlocking passphrase', spinner='moon')
@@ -58,7 +58,6 @@ def unlock(dirname,destination):
         spinner.start()
         [f.unlink() for f in Path(static.tibis_tmp_dir).glob("*") if f.is_file()]
         spinner.succeed('tmp dir cleaned')
-        
         #Print warning for opened container
         unlockedCount=0
         db=static.tibis_db_location
@@ -67,6 +66,7 @@ def unlock(dirname,destination):
         sql = static.tibis_database_list_all
         cursor_obj.execute(sql)
         rows = cursor_obj.fetchall()
+        conn.close()
         for row in rows:
             name=row[0]
             status=row[3]
@@ -77,10 +77,12 @@ def unlock(dirname,destination):
         if(unlockedCount>1):
             log.warning(f"You have {unlockedCount} container unlocked !")
             log.warning("Remember to have as less unencrypted data as possible.")
+
+  except pgpy.errors.PGPDecryptionError:
+    log.error("Wrong passphrase")
+    exit(-1)
   except Exception as e:
     log.error(e)
-  finally:
-    conn.close()
 
 if __name__ == '__main__':
     unlock(dirname,destination)
