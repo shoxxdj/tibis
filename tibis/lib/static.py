@@ -1,7 +1,7 @@
 from pathlib import Path
 
-version  = '1.1.6'
-codename = "Ibis is born"
+version  = '1.2.0'
+codename = "Ibis is optimized"
 
 tibis_config_file="config.yml"
 tibis_config_location=str(Path.home())+"/.config/tibis/"
